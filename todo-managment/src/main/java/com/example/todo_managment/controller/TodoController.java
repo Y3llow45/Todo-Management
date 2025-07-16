@@ -18,4 +18,10 @@ public class TodoController {
         TodoDto createdTodo = todoService.createTodo(todoDto);
         return new ResponseEntity<>(createdTodo, HttpStatus.CREATED);
     }
+
+    @GetMapping
+    public ResponseEntity<TodoDto> getTodoById(@RequestParam Long id) {
+        TodoDto todoDto = todoService.getTodoById(id);
+        return new ResponseEntity<>(todoDto, HttpStatus.OK);
+    }
 }

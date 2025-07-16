@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public abstract class TodoServiceImpl implements TodoService {
+public class TodoServiceImpl implements TodoService {
 
     private TodoRepository todoRepository;
 
@@ -21,5 +21,12 @@ public abstract class TodoServiceImpl implements TodoService {
         todo.setDescription(todoDto.getDescription());
         Todo savedTodo = todoRepository.save(todo);
         return TodoMapper.mapToTodoDto(savedTodo);
+    }
+
+    @Override
+    public TodoDto getTodoById(Long id) {
+        Todo todo = todoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Todo not found with id: " + id));
+        return TodoMapper.mapToTodoDto(todo);
     }
 }
