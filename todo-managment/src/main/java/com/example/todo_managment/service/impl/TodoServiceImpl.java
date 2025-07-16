@@ -2,10 +2,10 @@ package com.example.todo_managment.service.impl;
 
 import com.example.todo_managment.dto.TodoDto;
 import com.example.todo_managment.entity.Todo;
-import com.example.todo_managment.mapper.TodoMapper;
 import com.example.todo_managment.repository.TodoRepository;
 import com.example.todo_managment.service.TodoService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,20 +13,21 @@ import org.springframework.stereotype.Service;
 public class TodoServiceImpl implements TodoService {
 
     private TodoRepository todoRepository;
+    private ModelMapper modelMapper;
 
     @Override
     public TodoDto createTodo(TodoDto todoDto) {
-        Todo todo = new Todo();
-        todo.setTitle(todoDto.getTitle());
-        todo.setDescription(todoDto.getDescription());
+        Todo todo = modelMapper.map(todoDto, Todo.class);
         Todo savedTodo = todoRepository.save(todo);
-        return TodoMapper.mapToTodoDto(savedTodo);
+        TodoDto savedTodoDto = modelMapper.map(savedTodo, TodoDto.class);
+        return savedTodoDto;
     }
 
     @Override
     public TodoDto getTodoById(Long id) {
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Todo not found with id: " + id));
-        return TodoMapper.mapToTodoDto(todo);
+        TodoDto todoDto = modelMapper.map(todo, TodoDto.class);
+        return todoDto;
     }
 }
