@@ -21,7 +21,7 @@ public class TodoController {
         return new ResponseEntity<>(createdTodo, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping(params = "id")
     public ResponseEntity<TodoDto> getTodoById(@RequestParam Long id) {
         TodoDto todoDto = todoService.getTodoById(id);
         return new ResponseEntity<>(todoDto, HttpStatus.OK);
@@ -31,5 +31,11 @@ public class TodoController {
     public ResponseEntity<List<TodoDto>> getAllTodos() {
         List<TodoDto> todos = todoService.getAllTodos();
         return new ResponseEntity<>(todos, HttpStatus.OK);
+    }
+
+    @PutMapping(params = "id")
+    public ResponseEntity<TodoDto> updateTodo(@RequestParam Long id, @RequestBody TodoDto todoDto) {
+        TodoDto updatedTodo = todoService.updateTodo(id, todoDto);
+        return new ResponseEntity<>(updatedTodo, HttpStatus.OK);
     }
 }
