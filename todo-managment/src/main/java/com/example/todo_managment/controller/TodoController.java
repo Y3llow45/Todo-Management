@@ -38,4 +38,10 @@ public class TodoController {
         TodoDto updatedTodo = todoService.updateTodo(id, todoDto);
         return new ResponseEntity<>(updatedTodo, HttpStatus.OK);
     }
+
+    @DeleteMapping(params = "id")
+    public ResponseEntity<Void> deleteTodo(@RequestParam Long id) {
+        todoService.deleteTodo(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
