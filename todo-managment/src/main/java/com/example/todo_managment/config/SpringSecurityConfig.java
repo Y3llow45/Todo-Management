@@ -17,4 +17,12 @@ public class SpringSecurityConfig {
                 }).httpBasic(Customizer.withDefaults());
         return http.build();
     }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails user = User.withUsername("user")
+                .password("password")
+                .roles("USER")
+                .build();
+    }
 }
