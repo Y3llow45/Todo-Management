@@ -1,5 +1,7 @@
 package com.example.todo_managment.config;
 
+import com.example.todo_managment.security.JwtAuthenticationEntryPoint;
+import com.example.todo_managment.security.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableMethodSecurity
@@ -20,6 +23,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SpringSecurityConfig {
 
     private UserDetailsService userDetailsService;
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -34,6 +39,10 @@ public class SpringSecurityConfig {
                     authorize.requestMatchers("/api/auth/**").permitAll();
                     //authorize.anyRequest().authenticated();
                 }).httpBasic(Customizer.withDefaults());
+
+        http.exceptionHandling(exception -> exception
+        .authenticationEntryPoint(jwtAuthenticationEntryPoint));
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -42,3 +51,23 @@ public class SpringSecurityConfig {
         return configuration.getAuthenticationManager();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
